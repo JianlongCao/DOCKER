@@ -34,6 +34,11 @@ RUN cd /opt/git && curl -O https://git-core.googlecode.com/files/git-1.9.0.tar.g
 RUN cd /opt/git/git-1.9.0 && make prefix=/usr/local install
 RUN cd /opt/git && curl -O https://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz && tar xz -C /usr/local/share/man -f git-manpages-1.9.0.tar.gz
 
+git config --global alias.st status 
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.unstage reset HEAD --
+
 # Install the SSH Server
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y dropbear
 RUN echo 'root:root' |chpasswd
