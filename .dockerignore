@@ -1,0 +1,7 @@
+.git
+.gitignore
+*/temp*
+*/*/temp*
+temp?
+*.md
+!LICENCSE.md
