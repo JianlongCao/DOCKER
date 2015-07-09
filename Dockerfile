@@ -40,7 +40,7 @@ RUN echo 'root:root' |chpasswd
 # Install vim 7.4
 RUN mkdir /opt/vim
 RUN cd /opt/vim && curl -L -O ftp://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2 && tar xjf vim-7.4.tar.bz2
-RUN cd /opt/vim/vim74/ && ./configure --prefix=/usr/local --with-features=huge --enable-cscope   --enable-pythoninterp --with-python-config-dir=$(python-config --configdir)
+RUN cd /opt/vim/vim74/ && ./configure --prefix=/usr/local --with-features=huge --enable-cscope   --enable-pythoninterp --with-python-config-dir=$(python-config --configdir) &&make &&make install
 
 RUN update-alternatives --install /usr/bin/editor editor /usr/local/bin/vim 1
 RUN update-alternatives --set editor /usr/local/bin/vim
@@ -66,8 +66,7 @@ RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true 
 RUN apt-get install -y oracle-java7-installer
 
 # Simple Global config
-echo 'set completion-ignore-case On' >~/.inputrc
+RUN echo 'set completion-ignore-case On' >~/.inputrc
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN apt-get update
