@@ -2,7 +2,7 @@
 # Dockerfile to build an ide image
 ###########################################
 # Base image is Ubuntu
-FROM ubuntu:14.04
+FROM 32bit/ubuntu:14.04
 # Author: Dr. Peter
 MAINTAINER JL Cao <caojianlong@outlook.com>
 # Install git vim cscope package
@@ -58,7 +58,6 @@ RUN cd ~/; git clone http://github.com/JianlongCao/TMUX.git .tmux; ln -s .tmux/.
 
 # Install Oracle JDK 7
 
-RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update && apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:webupd8team/java -y
 RUN apt-get update
