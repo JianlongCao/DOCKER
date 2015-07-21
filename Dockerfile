@@ -68,7 +68,7 @@ RUN apt-get install -y oracle-java7-installer
 RUN echo 'set completion-ignore-case On' >~/.inputrc
 
 #samba
-RUN git clone git@github.com:JianlongCao/SAMBA.git /tmp/SAMBA; cp /tmp/SAMBA/smb.conf /etc/samba/smb.conf
+RUN git clone https://github.com/JianlongCao/SAMBA.git /tmp/SAMBA; cp /tmp/SAMBA/smb.conf /etc/samba/smb.conf
 RUN mkdir -p /code; chmod 777 /code
 RUN service samba restart
 
