@@ -68,6 +68,10 @@ RUN apt-get install -y oracle-java7-installer
 RUN echo 'set completion-ignore-case On' >~/.inputrc
 
 #samba
+EXPOSE 137:137
+EXPOSE 138:138
+EXPOSE 139:139
+EXPOSE 445:445
 RUN apt-get install -y samba
 RUN git clone https://github.com/JianlongCao/SAMBA.git /tmp/SAMBA; cp /tmp/SAMBA/smb.conf /etc/samba/smb.conf
 RUN mkdir -p /code; chmod 777 /code
