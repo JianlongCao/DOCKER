@@ -26,7 +26,7 @@ RUN apt-get remove -y vim vim-runtime vim-tiny vim-common
 # libexpat1-dev # git
 # gettext # git
 RUN apt-get update
-RUN apt-get install -y build-essential autotools-dev automake man flex pkg-config libevent-dev libtool libncurses-dev libssl-dev libcurl4-openssl-dev libexpat1-dev gettext python-dev
+RUN apt-get install -y build-essential autotools-dev automake man flex byacc pkg-config libevent-dev libtool libncurses-dev libssl-dev libcurl4-openssl-dev libexpat1-dev gettext python-dev
 
 
 RUN git config --global alias.st status 
