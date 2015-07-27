@@ -9,7 +9,8 @@ MAINTAINER JL Cao <caojianlong@outlook.com>
 RUN apt-get update && \
    apt-get install -y \
 	git \
-	cscope 
+	cscope \
+	bash-completion
 
 # Remove default vim
 RUN apt-get remove -y vim vim-runtime vim-tiny vim-common
