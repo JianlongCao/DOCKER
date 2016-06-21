@@ -52,8 +52,8 @@ RUN cd ~/; git clone https://github.com/JianlongCao/MYVIM .jayvim; cd .jayvim; .
 
 # Install tmux 1.9a
 RUN mkdir /opt/tmux
-RUN cd /opt/tmux && curl -L -O http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz && tar xzf tmux-1.9a.tar.gz
-RUN cd /opt/tmux/tmux-1.9a && ./configure && make && make install
+RUN cd /opt/tmux && curl -L -O https://github.com/tmux/tmux/releases/download/2.2/tmux-2.2.tar.gz && tar xzf tmux-2.2.tar.gz
+RUN cd /opt/tmux/tmux-2.2 && ./configure && make && make install
 
 RUN cd ~/; git clone http://github.com/JianlongCao/TMUX.git .tmux; ln -s .tmux/.tmux.conf .tmux.conf
 
