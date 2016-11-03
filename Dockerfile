@@ -40,8 +40,8 @@ RUN echo 'root:root' |chpasswd
 
 # Install vim 7.4
 RUN mkdir /opt/vim
-RUN cd /opt/vim && curl -L -O ftp://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2 && tar xjf vim-7.4.tar.bz2
-RUN cd /opt/vim/vim74/ && ./configure --prefix=/usr/local --with-features=huge --enable-cscope   --enable-pythoninterp --with-python-config-dir=$(python-config --configdir) &&make &&make install
+RUN cd /opt/vim && git clone https://github.com/vim/vim.git
+RUN cd /opt/vim/vim/ && ./configure --prefix=/usr/local --with-features=huge --enable-cscope   --enable-pythoninterp --with-python-config-dir=$(python-config --configdir) &&make &&make install
 
 RUN update-alternatives --install /usr/bin/editor editor /usr/local/bin/vim 1
 RUN update-alternatives --set editor /usr/local/bin/vim
