@@ -57,13 +57,13 @@ RUN cd /opt/tmux/tmux-2.2 && ./configure && make && make install
 
 RUN cd ~/; git clone http://github.com/JianlongCao/TMUX.git .tmux; ln -s .tmux/.tmux.conf .tmux.conf
 
-# Install Oracle JDK 7
+# Install Oracle JDK 8
 
 RUN apt-get update && apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:webupd8team/java -y
 RUN apt-get update
-RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java7-installer
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+RUN apt-get install -y oracle-java8-installer
 
 # Simple Global config
 RUN echo 'set completion-ignore-case On' >~/.inputrc
