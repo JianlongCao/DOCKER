@@ -1,34 +1,26 @@
-###########################################
-# Dockerfile to build an ide image
-###########################################
-# Base image is Ubuntu
-FROM 32bit/ubuntu:14.04
-# Author: Dr. Peter
+# Python develop env
+# Date : 2021-11-13
+# Author : JianlongCao
+FROM ubuntu:20.04
+
 MAINTAINER JL Cao <caojianlong@outlook.com>
-# Install git vim cscope package
+
+ENV TZ=Asia/Shanghai
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
    apt-get install -y \
-	git \
-	cscope \
-	bash-completion
+    bash-completion \
+    tmux curl cscope \
+    zsh sed sudo git
+
+# oh-my-zsh
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+CMD [ "zsh" ]
 
 # Remove default vim
 RUN apt-get remove -y vim vim-runtime vim-tiny vim-common
-# Install required packages
-# build-essential # general
-# autotools-dev # general
-# automake # general
-# man # general, git, tmux
-# pkg-config # tmux
-# libevent-dev # tmux
-# libncurses-dev # tmux, vim
-# libssl-dev # git
-# libcurl4-openssl-dev # git
-# libexpat1-dev # git
-# gettext # git
-RUN apt-get update
 RUN apt-get install -y build-essential autotools-dev automake man flex byacc pkg-config libevent-dev libtool libncurses-dev libssl-dev libcurl4-openssl-dev libexpat1-dev gettext python-dev
-
 
 RUN git config --global alias.st status 
 RUN git config --global alias.co checkout
@@ -38,7 +30,6 @@ RUN git config --global alias.br branch
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y dropbear
 RUN echo 'root:root' |chpasswd
 
-# Install vim 7.4
 RUN mkdir /opt/vim
 RUN cd /opt/vim && git clone https://github.com/vim/vim.git
 RUN cd /opt/vim/vim/ && ./configure --prefix=/usr/local --with-features=huge --enable-cscope   --enable-pythoninterp --with-python-config-dir=$(python-config --configdir) &&make &&make install
@@ -47,36 +38,40 @@ RUN update-alternatives --install /usr/bin/editor editor /usr/local/bin/vim 1
 RUN update-alternatives --set editor /usr/local/bin/vim
 RUN update-alternatives --install /usr/bin/vi vi /usr/local/bin/vim 1
 RUN update-alternatives --set vi /usr/local/bin/vim
-	
+
+#RUN apt-get install vim -y
+
+# vim config
 RUN cd ~/; git clone https://github.com/JianlongCao/MYVIM .jayvim; cd .jayvim; ./build.sh;
 
-# Install tmux 1.9a
-RUN mkdir /opt/tmux
-RUN cd /opt/tmux && curl -L -O https://github.com/tmux/tmux/releases/download/2.2/tmux-2.2.tar.gz && tar xzf tmux-2.2.tar.gz
-RUN cd /opt/tmux/tmux-2.2 && ./configure && make && make install
-
+# tmux config
 RUN cd ~/; git clone http://github.com/JianlongCao/TMUX.git .tmux; ln -s .tmux/.tmux.conf .tmux.conf
 
-# Install Oracle JDK 8
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties
-RUN add-apt-repository ppa:webupd8team/java -y
-RUN apt-get update
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+RUN apt update && apt install fontconfig fonts-indic -y \
+    && fc-cache -f 
 
-# Simple Global config
-RUN echo 'set completion-ignore-case On' >~/.inputrc
+# set as python3 only
+RUN apt-get install  python-is-python3 python3-pip -y
 
-#samba
-EXPOSE 137:137
-EXPOSE 138:138
-EXPOSE 139:139
-EXPOSE 445:445
-RUN apt-get install -y samba
-RUN git clone https://github.com/JianlongCao/SAMBA.git /tmp/SAMBA; cp /tmp/SAMBA/smb.conf /etc/samba/smb.conf
-RUN mkdir -p /code; chmod 777 /code
-RUN service samba restart
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN pip install pandas
+RUN pip install tushare
+RUN pip install chinese_calendar
+RUN curl -LO http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz \
+  && sudo tar -xzf ta-lib-0.4.0-src.tar.gz \
+  && sudo rm ta-lib-0.4.0-src.tar.gz \
+  && cd ta-lib/ \
+  && sudo ./configure --prefix=/usr \
+  && sudo make \
+  && sudo make install \
+  && cd ~ \
+  && sudo rm -rf ta-lib/ \
+  && pip install ta-lib
+RUN pip install xlrd
+RUN pip install schedule
+RUN pip install tables
+RUN pip install jupyterlab
