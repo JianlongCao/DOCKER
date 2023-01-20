@@ -12,7 +12,7 @@ RUN apt-get update && \
    apt-get install -y \
     bash-completion \
     tmux curl cscope \
-    zsh sed sudo git
+    zsh sed sudo git tig qemu-system-arm qemu-efi
 
 # oh-my-zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
